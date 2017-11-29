@@ -352,6 +352,24 @@ module.exports =
                     # --none
                     #memory
                     # --none
+                    
+                # power layers: computes outputs y = (shift + scale * x) ^ power
+                when "power"
+                    params = n.attribs.power_param
+                    power = params.power ? 1
+                    scale = params.scale ? 1
+                    shift = params.shift ? 0
+                    #dimensions: pass-through
+                    d.wOut = d.wIn
+                    d.hOut = d.hIn
+                    d.chOut = d.chIn
+                    #computation
+                    n_elements = d.wOut * d.hOut * d.chOut
+                    d.comp.macc = if scale != 1 then n_elements else 0
+                    d.comp.add = if shift != 0 then n_elements else 0
+                    d.comp.exp = if power != 1 then n_elements else 0
+                    #memory
+                    d.mem.activation = n_elements
 
                 # permute layers reorder the channels / dimensions
                 when "permute"
