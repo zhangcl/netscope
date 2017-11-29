@@ -65,6 +65,7 @@ module.exports =
                     numout   = params.num_output
                     group    = params.group ? 1
                     dilation = params.dilation ? 1
+                    has_bias = if (params.bias_term ? "true") == "false" then 0 else 1
 
                     # according to http://caffe.berkeleyvision.org/tutorial/layers.html and https://github.com/BVLC/caffe/issues/3656
                     kernel = dilation*(kernel_w-1)+1
@@ -76,7 +77,7 @@ module.exports =
                     #computation
                     d.comp.macc = (kernel_w*kernel_h)*(d.wOut*d.hOut)*d.chIn*d.chOut*d.batchOut/group
                     #memory
-                    d.mem.param = (kernel_w*kernel_h)*d.chIn*d.chOut/group
+                    d.mem.param = (kernel_w*kernel_h)*d.chIn*d.chOut/group + has_bias*d.chOut
                     d.mem.activation = (d.wOut*d.hOut)*d.chOut*d.batchOut
 
                     # CACHE AND BANDWIDTH for Implementation Variants
@@ -133,13 +134,14 @@ module.exports =
                 when "innerproduct", "inner_product"
                     #dimensions
                     numout = n.attribs.inner_product_param.num_output
+                    has_bias = if (n.attribs.inner_product_param.bias_term ? "true") == "false" then 0 else 1
                     d.wOut = 1
                     d.hOut = 1
                     d.chOut = numout
                     #computation
                     d.comp.macc = (d.wIn*d.hIn)*d.chIn*d.chOut*d.batchOut
                     #memory
-                    d.mem.param = d.wIn*d.hIn*d.chIn*d.chOut
+                    d.mem.param = d.wIn*d.hIn*d.chIn*d.chOut + has_bias*d.chOut
                     d.mem.activation = d.wOut*d.hOut*d.chOut*d.batchOut
 
                 when "pooling"
