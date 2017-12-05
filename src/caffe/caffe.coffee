@@ -90,6 +90,10 @@ module.exports =
 class CaffeParser
     @parse : (txt, phase) ->
         [header, layerDesc] = Parser.parse txt
+        # if header is already a layer instead of a 'global header' with network name etc...:
+        if header.layer
+            layerDesc.unshift header
+            header = {name: 'Unnamed Network'}
         # extract input_shape field from layerDesc to header
         if layerDesc[0].input_dim? or layerDesc[0].input_shape?
             _.extend(header,layerDesc[0])
