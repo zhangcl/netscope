@@ -27,7 +27,7 @@ module.exports =
             d.hIn  = parent?.hOut
             d.chIn = parent?.chOut
             switch layertype
-                when "data"
+                when "data", "input"
                     #dimensions
                     if n.attribs.input_param?.shape?
                         shape     = n.attribs.input_param.shape

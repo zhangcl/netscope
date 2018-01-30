@@ -16139,6 +16139,7 @@ module.exports = Analyzer = class Analyzer {
       d.chIn = parent != null ? parent.chOut : void 0;
       switch (layertype) {
         case "data":
+        case "input":
           //dimensions
           if (((ref2 = n.attribs.input_param) != null ? ref2.shape : void 0) != null) {
             shape = n.attribs.input_param.shape;
