@@ -16591,8 +16591,9 @@ module.exports = Analyzer = class Analyzer {
             d.mem.activation = 0;
           }
           break;
-        // accuracy layers just pass through
+        // accuracy and shufflechannel layers just pass through
         case "accuracy":
+        case "shufflechannel":
           //dimensions
           //# assume pass-through
           d.wOut = d.wIn;

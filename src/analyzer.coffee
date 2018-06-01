@@ -346,8 +346,8 @@ module.exports =
                     d.mem.activation = d.wOut*d.hOut*d.chOut*d.batchOut
                     d.mem.activation = 0 if isNaN(d.mem.activation)
 
-                # accuracy layers just pass through
-                when "accuracy"
+                # accuracy and shufflechannel layers just pass through
+                when "accuracy", "shufflechannel"
                     #dimensions
                     ## assume pass-through
                     d.wOut = d.wIn
