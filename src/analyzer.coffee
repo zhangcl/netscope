@@ -479,7 +479,11 @@ module.exports =
                       d.comp.comp = d.batchOut * d.chIn * d.wIn * d.hIn
                       #memory
                       d.mem.activation = d.wOut*d.hOut*d.chOut*d.batchOut
-
+                when "interp"
+                    interp_param = n.attribs.interp_param
+                    d.wOut = interp_param.width
+                    d.hOut = interp_param.height
+                    d.chOut = d.chIn
                 else # unknown layer;  print error message;
                     onerror('Unknown Layer: '+layertype)
                     console.log(n)
